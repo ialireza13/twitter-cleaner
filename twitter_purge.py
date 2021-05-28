@@ -1,7 +1,7 @@
 import datetime
 import tweepy
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from tqdm import tqdm
 from time import sleep
 from random import randint
@@ -29,7 +29,7 @@ def delete_by_date(history, cutoff_date, min_retweet_threshold=0, min_like_thres
     
     idx_last = 2
     
-    log_file = open('log_file_'+randint(1e5,9e5), 'w')
+    log_file = open('log_file_'+str(randint(1e5,9e5))+'.txt', 'w')
 
     for idx, tweet in tqdm(enumerate(history[(idx_last-2):])):
         
@@ -53,6 +53,8 @@ def delete_by_date(history, cutoff_date, min_retweet_threshold=0, min_like_thres
                     continue
                 else:
                     while True:
+                        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+                        auth.set_access_token(access_token, access_token_secret)
                         api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
                         sleep(5)
                         try:
